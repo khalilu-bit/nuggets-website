@@ -766,9 +766,9 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
 <section class="cta-band">
   <div class="cta-inner">
     <h2>Turn your next support ticket into your next campaign.</h2>
-    <p>Nuggets is in early build. Get on the list and we'll bring you in as soon as the feed is ready.</p>
+    <p>Want real customer wins like this in your inbox? Join the Nuggets newsletter.</p>
     <div class="cta-actions">
-      <a class="btn-primary" href="http://192.168.0.186:5173/">Sign up</a>
+      <button class="btn-primary" id="btn-join-newsletter">Join newsletter</button>
     </div>
   </div>
 </section>
@@ -812,13 +812,13 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
       Back home
     </button>
     <div class="signup-card">
-      <div class="signup-badge mono">Early access</div>
-      <h2>Get notified when it's ready.</h2>
-      <p>Nuggets is in early build. Leave your email and we'll bring you in as soon as the feed is ready — or just email us directly.</p>
+      <div class="signup-badge mono">Newsletter</div>
+      <h2>Join the newsletter.</h2>
+      <p>Get real customer wins and product updates from Nuggets in your inbox — no spam, unsubscribe anytime.</p>
       <div class="signup-embed">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf2oRwudlCEfhMsq8zEa_FbAKjYZfjy_ZrLU19LJyFOYKir-Q/viewform?embedded=true" width="640" height="453" frameborder="0" marginheight="0" marginwidth="0" title="Nuggets early access sign-up">Loading…</iframe>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf2oRwudlCEfhMsq8zEa_FbAKjYZfjy_ZrLU19LJyFOYKir-Q/viewform?embedded=true" width="640" height="453" frameborder="0" marginheight="0" marginwidth="0" title="Nuggets newsletter sign-up">Loading…</iframe>
       </div>
-      <a class="signup-alt" href="mailto:hello@factry.io?subject=Nuggets%20early%20access">Or email hello@factry.io →</a>
+      <a class="signup-alt" href="mailto:hello@factry.io?subject=Nuggets%20newsletter">Or email hello@factry.io →</a>
     </div>
   </div>
 </div>
@@ -887,6 +887,7 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
   }
   document.getElementById('btn-back-home').addEventListener('click', goHome);
   document.getElementById('brand-home').addEventListener('click', function(e){ e.preventDefault(); goHome(); });
+  document.getElementById('btn-join-newsletter').addEventListener('click', goSignup);
 
   /* ---- Hero rotating word (typewriter) ---- */
   (function(){
