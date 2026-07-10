@@ -83,6 +83,10 @@
     text-wrap:balance;
   }
   .hero h1 em{font-style:normal;color:var(--gold);}
+  .type-cursor{display:inline-block;margin-left:2px;color:var(--gold);animation:caretBlink 0.85s steps(1) infinite;}
+  @media (prefers-reduced-motion:reduce){.type-cursor{animation:none;opacity:0;}}
+  @keyframes caretBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
   .hero p.lead{
     font-size:clamp(16px,1.6vw,19px);line-height:1.55;max-width:480px;margin-top:24px;
     color:rgba(251,249,244,0.72);
@@ -439,7 +443,7 @@
   <div class="hero-inner">
     <div class="hero-copy">
       <div class="eyebrow">Marketing-ready proof, from support</div>
-      <h1>Turn your support tickets<br>into your next <em>marketing campaign.</em></h1>
+      <h1>Turn your <span class="sr-only">support tickets</span><span id="rotate-text" aria-hidden="true">support tickets</span><span class="type-cursor" aria-hidden="true">|</span><br>into your next <em>marketing campaign.</em></h1>
       <p class="lead">Nuggets watches your support tickets, chats, and calls, then turns the good parts into lines your marketing team can actually use — with the source always one tap away.</p>
       <div class="hero-actions">
         <button class="btn-primary" id="btn-get-started-hero">Get started</button>
@@ -914,6 +918,48 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
   document.getElementById('btn-back-home').addEventListener('click', goHome);
   document.getElementById('brand-home').addEventListener('click', function(e){ e.preventDefault(); goHome(); });
   document.getElementById('footer-get-started').addEventListener('click', function(e){ e.preventDefault(); goSignup(); });
+
+  /* ---- Hero rotating word (typewriter) ---- */
+  (function(){
+    var rotateEl = document.getElementById('rotate-text');
+    if(!rotateEl) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var words = ['support tickets', 'customer database', 'knowledge base'];
+    var wordIndex = 0;
+    var charIndex = words[0].length;
+    var deleting = true;
+    var typeSpeed = 55;
+    var deleteSpeed = 32;
+    var pauseAfterType = 1600;
+    var pauseAfterDelete = 250;
+
+    function tick(){
+      var current = words[wordIndex];
+      if(deleting){
+        charIndex--;
+        rotateEl.textContent = current.slice(0, charIndex);
+        if(charIndex === 0){
+          deleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+          window.setTimeout(tick, pauseAfterDelete);
+          return;
+        }
+        window.setTimeout(tick, deleteSpeed);
+      } else {
+        charIndex++;
+        rotateEl.textContent = words[wordIndex].slice(0, charIndex);
+        if(charIndex === words[wordIndex].length){
+          deleting = true;
+          window.setTimeout(tick, pauseAfterType);
+          return;
+        }
+        window.setTimeout(tick, typeSpeed);
+      }
+    }
+
+    window.setTimeout(tick, 1800);
+  })();
 
   var MAILCHIMP_ACTION = 'https://factry.us17.list-manage.com/subscribe/post?u=3ef74bdd8acb45b3cfc582613&id=87d295f717&f_id=00a3f5e2f0';
 
