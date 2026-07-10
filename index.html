@@ -103,14 +103,17 @@
   /* ---------- PHONE ---------- */
   .phone-wrap{display:flex;justify-content:center;position:relative;}
   .tap-hint{
-    position:absolute;top:158px;left:calc(50% + 96px);
-    display:flex;align-items:center;gap:6px;
-    font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:0.04em;
-    color:var(--gold);white-space:nowrap;pointer-events:none;
+    position:absolute;top:-50px;left:50%;margin-left:-91px;
+    display:flex;align-items:center;gap:7px;
+    font-family:'DM Mono',monospace;font-size:12.5px;font-weight:500;letter-spacing:0.04em;
+    color:var(--forest);white-space:nowrap;pointer-events:none;
+    background:var(--gold);padding:8px 14px;border-radius:999px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.28);
     animation:hintPulse 2.2s ease-in-out infinite;
     z-index:5;
   }
-  @keyframes hintPulse{0%,100%{opacity:.45;transform:translateX(0);}50%{opacity:1;transform:translateX(-4px);}}
+  .tap-hint svg{transform:rotate(-90deg);flex-shrink:0;}
+  @keyframes hintPulse{0%,100%{opacity:.85;transform:translateY(0);}50%{opacity:1;transform:translateY(5px);}}
   @media (max-width:900px){.tap-hint{display:none;}}
 
   .phone{
@@ -399,7 +402,14 @@
   .signup-form input:focus{border-color:var(--gold);}
   .signup-form .btn-primary{padding:12px 20px;font-size:14.5px;flex-shrink:0;}
   @media (max-width:420px){.signup-form{flex-direction:column;}}
+  .signup-consent{
+    display:flex;align-items:flex-start;gap:9px;text-align:left;
+    margin-top:14px;font-size:12.5px;line-height:1.5;color:rgba(251,249,244,0.55);
+  }
+  .signup-consent input{margin-top:3px;flex-shrink:0;accent-color:var(--gold);}
   .signup-note{font-size:11.5px;color:rgba(251,249,244,0.4);margin-top:14px;letter-spacing:0.02em;}
+  .signup-note.signup-error{color:#e8846a;}
+  .signup-note.signup-success{color:var(--gold);}
   .signup-alt{display:inline-block;margin-top:18px;font-size:13.5px;color:var(--gold);font-weight:500;}
   .signup-alt:hover{color:var(--cream);}
 </style>
@@ -440,7 +450,7 @@
     <div class="phone-wrap">
       <div class="tap-hint">
         <span>Tap the top card</span>
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M13 5H1M5 1L1 5L5 9" stroke="#E8C46A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M13 5H1M5 1L1 5L5 9" stroke="#0B1F17" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="phone">
         <div class="phone-screen">
@@ -812,14 +822,21 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
       Back home
     </button>
     <div class="signup-card">
-      <div class="signup-badge mono">Under construction</div>
-      <h2>Sign-up is still being mined.</h2>
-      <p>We're building the real thing right now. Leave your email and we'll let you know the moment it's ready — or just email us directly.</p>
+      <div class="signup-badge mono">Early access</div>
+      <h2>Get notified when it's ready.</h2>
+      <p>Nuggets is in early build. Leave your email and we'll bring you in as soon as the feed is ready — or just email us directly.</p>
       <form id="signup-form" class="signup-form" novalidate>
-        <input type="email" placeholder="you@company.com" aria-label="Email address" required>
+        <input type="email" id="signup-email" placeholder="you@company.com" aria-label="Email address" required>
         <button type="submit" class="btn-primary" style="background:var(--gold);">Notify me</button>
       </form>
-      <p class="signup-note mono" id="signup-note">No sign-up flow yet — this just holds your spot.</p>
+      <label class="signup-consent">
+        <input type="checkbox" id="signup-consent">
+        I agree to hear from Factry by email about Nuggets. Unsubscribe anytime.
+      </label>
+      <div style="position:absolute;left:-5000px;" aria-hidden="true">
+        <input type="text" id="signup-honeypot" name="b_3ef74bdd8acb45b3cfc582613_87d295f717" tabindex="-1" value="">
+      </div>
+      <p class="signup-note mono" id="signup-note">We'll only use this to email you about Nuggets.</p>
       <a class="signup-alt" href="mailto:hello@factry.io?subject=Nuggets%20early%20access">Or email hello@factry.io →</a>
     </div>
   </div>
@@ -893,11 +910,49 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
   document.getElementById('btn-back-home').addEventListener('click', goHome);
   document.getElementById('footer-get-started').addEventListener('click', function(e){ e.preventDefault(); goSignup(); });
 
+  var MAILCHIMP_ACTION = 'https://factry.us17.list-manage.com/subscribe/post?u=3ef74bdd8acb45b3cfc582613&id=87d295f717&f_id=00a3f5e2f0';
+
   document.getElementById('signup-form').addEventListener('submit', function(e){
     e.preventDefault();
+    var form = this;
     var note = document.getElementById('signup-note');
-    note.textContent = "Thanks — we'll email you when it's ready.";
-    note.style.color = 'var(--gold)';
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var email = document.getElementById('signup-email').value.trim();
+    var consent = document.getElementById('signup-consent').checked;
+    var honeypot = document.getElementById('signup-honeypot').value;
+
+    note.classList.remove('signup-error', 'signup-success');
+
+    if(!email){
+      note.textContent = 'Enter your email first.';
+      note.classList.add('signup-error');
+      return;
+    }
+    if(!consent){
+      note.textContent = "Please check the box so we know it's okay to email you.";
+      note.classList.add('signup-error');
+      return;
+    }
+    if(honeypot){ return; } // bot filled the hidden field — drop silently
+
+    var body = new URLSearchParams();
+    body.append('EMAIL', email);
+    body.append('gdpr[220436]', 'Y');
+    body.append('b_3ef74bdd8acb45b3cfc582613_87d295f717', '');
+
+    submitBtn.disabled = true;
+    fetch(MAILCHIMP_ACTION, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString()
+    }).catch(function(){ /* no-cors gives an opaque response either way */ })
+      .then(function(){
+        note.textContent = "Thanks — we'll email you when it's ready.";
+        note.classList.add('signup-success');
+        form.reset();
+        submitBtn.disabled = false;
+      });
   });
 
   /* ---- Tabbed showcase ---- */
