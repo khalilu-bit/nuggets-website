@@ -417,14 +417,14 @@
 <body>
 
 <header class="topbar" id="top">
-  <div class="brand">
+  <a class="brand" href="#top" id="brand-home" aria-label="Nuggets home">
     <svg viewBox="0 0 120 120" width="30" height="30">
       <ellipse cx="46" cy="54" rx="21" ry="18" fill="#CAA04F"/>
       <ellipse cx="72" cy="46" rx="20" ry="18" fill="#E8C46A"/>
       <ellipse cx="58" cy="72" rx="24" ry="17" fill="#0B1F17"/>
     </svg>
     <span class="brand-name">nuggets</span>
-  </div>
+  </a>
   <nav>
     <a class="navlink" href="#showcase">Every kind of win</a>
     <a class="navlink" href="#how-it-works">How it works</a>
@@ -912,6 +912,7 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
   document.getElementById('btn-get-started-hero').addEventListener('click', goSignup);
   document.getElementById('btn-get-started-cta').addEventListener('click', goSignup);
   document.getElementById('btn-back-home').addEventListener('click', goHome);
+  document.getElementById('brand-home').addEventListener('click', function(e){ e.preventDefault(); goHome(); });
   document.getElementById('footer-get-started').addEventListener('click', function(e){ e.preventDefault(); goSignup(); });
 
   var MAILCHIMP_ACTION = 'https://factry.us17.list-manage.com/subscribe/post?u=3ef74bdd8acb45b3cfc582613&id=87d295f717&f_id=00a3f5e2f0';
