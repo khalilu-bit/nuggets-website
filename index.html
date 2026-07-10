@@ -100,12 +100,6 @@
     border:none;padding:14px 26px;border-radius:999px;cursor:pointer;transition:background .18s;
   }
   .btn-primary:hover{background:var(--bronze);}
-  .btn-ghost{
-    font-weight:600;font-size:15px;color:var(--cream);background:transparent;
-    border:1.5px solid rgba(251,249,244,0.28);padding:12.5px 24px;border-radius:999px;
-    cursor:pointer;transition:all .18s;
-  }
-  .btn-ghost:hover{border-color:var(--cream);}
 
   /* ---------- PHONE ---------- */
   .phone-wrap{display:flex;justify-content:center;position:relative;}
@@ -422,7 +416,7 @@
   <nav>
     <a class="navlink" href="#showcase">Feed</a>
     <a class="navlink" href="#how-it-works">How it works</a>
-    <button class="btn-cta" id="btn-get-started-nav">Get started</button>
+    <a class="btn-cta" href="http://192.168.0.186:5173/">Sign up</a>
   </nav>
 </header>
 
@@ -436,8 +430,7 @@
       <h1>Turn your <span class="sr-only">support tickets</span><span id="rotate-text" aria-hidden="true">support tickets</span><span class="type-cursor" aria-hidden="true">|</span><br>into your next <em>marketing campaign.</em></h1>
       <p class="lead">Nuggets watches your support tickets, chats, and calls, then turns the good parts into lines your marketing team can actually use — with the source always one tap away.</p>
       <div class="hero-actions">
-        <button class="btn-primary" id="btn-get-started-hero">Get started</button>
-        <a class="btn-ghost" href="#how-it-works">See how it works</a>
+        <a class="btn-primary" href="http://192.168.0.186:5173/">Sign up</a>
       </div>
     </div>
 
@@ -775,8 +768,7 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
     <h2>Turn your next support ticket into your next campaign.</h2>
     <p>Nuggets is in early build. Get on the list and we'll bring you in as soon as the feed is ready.</p>
     <div class="cta-actions">
-      <button class="btn-primary" id="btn-get-started-cta">Get started</button>
-      <a class="btn-ghost" href="mailto:hello@factry.io?subject=Nuggets%20early%20access">Get in touch</a>
+      <a class="btn-primary" href="http://192.168.0.186:5173/">Sign up</a>
     </div>
   </div>
 </section>
@@ -802,7 +794,7 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
     <div class="foot-col">
       <div class="foot-col-title mono">Company</div>
       <a href="mailto:hello@factry.io?subject=Nuggets%20early%20access">Get in touch</a>
-      <a href="#" id="footer-get-started">Get started</a>
+      <a href="http://192.168.0.186:5173/">Sign up</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -893,12 +885,8 @@ Small alarm, real savings. That's the kind of unglamorous win we love surfacing.
     document.getElementById('page-home').style.display = 'block';
     window.scrollTo(0,0);
   }
-  document.getElementById('btn-get-started-nav').addEventListener('click', goSignup);
-  document.getElementById('btn-get-started-hero').addEventListener('click', goSignup);
-  document.getElementById('btn-get-started-cta').addEventListener('click', goSignup);
   document.getElementById('btn-back-home').addEventListener('click', goHome);
   document.getElementById('brand-home').addEventListener('click', function(e){ e.preventDefault(); goHome(); });
-  document.getElementById('footer-get-started').addEventListener('click', function(e){ e.preventDefault(); goSignup(); });
 
   /* ---- Hero rotating word (typewriter) ---- */
   (function(){
